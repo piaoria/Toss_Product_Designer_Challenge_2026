@@ -1,0 +1,12 @@
+# 환경변수 (API 키)
+.env
+.env.*
+!.env.example
+
+# 의존성
+node_modules/
+
+# 루트의 자동 생성 회의록(테스트 출력)은 무시. 템플릿은 추적.
+# 정식 등록 회의록은 meetings/ 폴더에 두고 버전관리한다.
+/toss-meeting-*.md
+!toss-meeting-output-template.md

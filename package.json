@@ -1,0 +1,24 @@
+{
+  "name": "toss_product_designer_challenge_2026",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piaoria/Toss_Product_Designer_Challenge_2026.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/piaoria/Toss_Product_Designer_Challenge_2026/issues"
+  },
+  "homepage": "https://github.com/piaoria/Toss_Product_Designer_Challenge_2026#readme",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.106.0"
+  }
+}
