@@ -6,7 +6,5 @@
 # 의존성
 node_modules/
 
-# 루트의 자동 생성 회의록(테스트 출력)은 무시. 템플릿은 추적.
-# 정식 등록 회의록은 meetings/ 폴더에 두고 버전관리한다.
-/toss-meeting-*.md
-!toss-meeting-output-template.md
+# 회의록은 meetings/ 폴더에 자동 저장되며 전부 git으로 추적한다.
+# (별도 무시 규칙 없음 — 진행 기록이므로 모두 버전관리)

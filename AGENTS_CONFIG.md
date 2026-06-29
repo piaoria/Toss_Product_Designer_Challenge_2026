@@ -6,30 +6,35 @@
 
 ---
 
-## 📌 현재 버전: v2 (2026-06-29)
+## 📌 현재 버전: v3 (2026-06-29)
 
 | 항목 | 값 |
 |------|-----|
-| 모델 | `claude-haiku-4-5` |
-| `max_tokens` | `2000` (에이전트 공통) |
+| 모델 | **혼용** — A·B·E `claude-opus-4-8`, C·D `claude-haiku-4-5` |
+| 기본 모델 | `claude-haiku-4-5` (`DEFAULT_MODEL`, 에이전트가 미지정 시) |
+| `max_tokens` | `4000` (`DEFAULT_MAX_TOKENS`, 에이전트 공통) |
 | 호출 방식 | `client.messages.create` (비스트리밍) |
 | thinking | 미사용 (기본값) |
-| 실행 방식 | 순차 실행 (A → B → C → D), 컨텍스트 누적 전달 |
+| 실행 방식 | 순차 실행 (A → B → C → D → E), 컨텍스트 누적 전달 |
 | SDK | `@anthropic-ai/sdk` |
 | 런타임 | Node.js (ESM, `.mjs`), `.env` → `process.loadEnvFile()` |
 | 인증 | `ANTHROPIC_API_KEY` (.env) |
 
-### 비용 단가 (회의록 비용 계산 기준)
-| 구분 | 단가 |
-|------|------|
-| 입력 | $1 / 1M tokens |
-| 출력 | $5 / 1M tokens |
+### 비용 단가 ($ / 1M tokens) — 모델별 자동 계산
+| 모델 | 입력 | 출력 |
+|------|------|------|
+| `claude-opus-4-8` | $5 | $25 |
+| `claude-haiku-4-5` | $1 | $5 |
+
+> 비용은 각 에이전트가 실제 사용한 모델 기준으로 합산됩니다 (`PRICING` 맵 + `costOf()`).
 
 ---
 
 ## 🤖 에이전트 구성
 
 실행 순서대로 5개. 각 에이전트는 이전 에이전트의 결과를 **누적**으로 입력받습니다.
+
+**모델 배정:** A·B·E = `claude-opus-4-8` (날카로운 추론 필요), C·D = `claude-haiku-4-5` (저비용)
 
 ### 1. 🔍 Agent A — Problem Framer
 - **role:** UX 리서처 / 문제 정의 전문가
@@ -76,8 +81,9 @@
 ## 📤 아웃풋 규칙
 
 - 실행 시 콘솔에 에이전트별 진행상황 + 토큰(입력/출력/합계) + 소요시간 출력
-- 종료 시 `toss-meeting-<timestamp>.md` 회의록 자동 생성 (루트, gitignore 대상 = 테스트 출력)
-- 정식 등록 회의록은 `meetings/` 폴더로 옮겨 버전관리 (예: `meetings/2026-06-29-meeting-01.md`)
+- 종료 시 `meetings/meeting-<YYYY-MM-DD-HHmmss>.md` 회의록 자동 생성 (KST 타임스탬프)
+- **모든 회의록을 git으로 추적** — 진행 기록이므로 별도 gitignore 없음 (`meetings/` 폴더에 누적)
+- 초기 마일스톤 회의록은 `meetings/2026-06-29-meeting-01.md`, `-02.md`로 보존
 
 ---
 
@@ -87,3 +93,4 @@
 |------|------|------|-----------|------|
 | v1 | 2026-06-29 | `claude-haiku-4-5` | 2000 | 최초 구성. 저비용 테스트용. 4개 에이전트 모두 출력 2000 토큰 도달(잘림 가능성 있음) |
 | v2 | 2026-06-29 | `claude-haiku-4-5` | 2000 | 👥 User QA Panel 에이전트 추가 (C 다음, D→E로 밀림). 과제 6명 동료 페르소나 빙의 사용성 검증. 5단계 파이프라인(문제→해결→시각화→사용자검증→평가) |
+| v3 | 2026-06-29 | A·B·E=`opus-4-8` / C·D=`haiku-4-5` | 4000 | 에이전트별 모델 지정 구조 도입(`DEFAULT_MODEL`/`PRICING`/`costOf`). A·B·E를 Opus로 격상. max_tokens 2000→4000. 회의록 전부 `meetings/`에 저장+git 추적. 비용 모델별 자동 계산 |
